@@ -36,7 +36,7 @@ void MidiSend1(midi_device_t dev, uint8_t   port, uint8_t b0) {
             break;
         }
         case MIDI_DEVICE_INTERNAL: {
-            MidiInMsgHandler(MIDI_DEVICE_INTERNAL, port, b0, 0, 0);
+            MidiInMsgHandler(MIDI_DEVICE_INTERNAL, port, b0, 0, 0, NULL, 0);
             break;
         }
         case MIDI_DEVICE_USB_DEVICE: {
@@ -60,7 +60,7 @@ void MidiSend2(midi_device_t dev, uint8_t port, uint8_t b0, uint8_t b1) {
             break;
         }
         case MIDI_DEVICE_INTERNAL: {
-            MidiInMsgHandler(MIDI_DEVICE_INTERNAL, port, b0, b1, 0);
+            MidiInMsgHandler(MIDI_DEVICE_INTERNAL, port, b0, b1, 0, NULL, 0);
             break;
         }
         case MIDI_DEVICE_USB_DEVICE: {
@@ -84,7 +84,7 @@ void MidiSend3(midi_device_t dev, uint8_t port, uint8_t b0, uint8_t b1, uint8_t 
             break;
         }
         case MIDI_DEVICE_INTERNAL: {
-            MidiInMsgHandler(MIDI_DEVICE_INTERNAL, port, b0, b1, b2);
+            MidiInMsgHandler(MIDI_DEVICE_INTERNAL, port, b0, b1, b2, NULL, 0);
             break;
         }
         case MIDI_DEVICE_USB_DEVICE: {

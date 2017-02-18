@@ -110,7 +110,8 @@ typedef enum
 #define MIDI_PORT_OMNI 0
 
 void midi_init(void);
-void MidiInMsgHandler(midi_device_t dev, uint8_t port, uint8_t b0, uint8_t b1, uint8_t b2);
+void MidiInMsgHandler(midi_device_t dev, uint8_t port, uint8_t b0, uint8_t b1, uint8_t b2, 
+                        uint8_t sysex_bytes[], uint8_t sysex_len);
 
 
 void MidiSend1(midi_device_t dev, uint8_t port, uint8_t b0);

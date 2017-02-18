@@ -749,7 +749,7 @@ public class AxoObjectInstance extends AxoObjectInstanceAbstract implements Obje
         return s;
     }
 
-    public final static String MidiHandlerFunctionHeader = "void MidiInHandler(midi_device_t dev, uint8_t port, uint8_t status, uint8_t data1, uint8_t data2) {\n";
+    public final static String MidiHandlerFunctionHeader = "void MidiInHandler(midi_device_t dev, uint8_t port, uint8_t status, uint8_t data1, uint8_t data2, uint8_t sysex_bytes[], uint8_t sysex_len) {\n";
 
     @Override
     public String GenerateClass(String ClassName, String OnParentAccess, Boolean enableOnParent) {
@@ -798,11 +798,11 @@ public class AxoObjectInstance extends AxoObjectInstanceAbstract implements Obje
     @Override
     public String GenerateCallMidiHandler() {
         if ((getType().sMidiCode != null) && (!getType().sMidiCode.isEmpty())) {
-            return getCInstanceName() + "_i.MidiInHandler(dev, port, status, data1, data2);\n";
+            return getCInstanceName() + "_i.MidiInHandler(dev, port, status, data1, data2, sysex_bytes, sysex_len);\n";
         }
         for (ParameterInstance pi : getParameterInstances()) {
             if (!pi.GenerateCodeMidiHandler("").isEmpty()) {
-                return getCInstanceName() + "_i.MidiInHandler(dev, port, status, data1, data2);\n";
+                return getCInstanceName() + "_i.MidiInHandler(dev, port, status, data1, data2, sysex_bytes, sysex_len);\n";
             }
         }
         return "";

@@ -57,6 +57,10 @@ unsigned char MidiCurData;
 unsigned char MidiNumData;
 unsigned char MidiInChannel;
 
+#define MIDI_SYSEX_BUFFER_SIZE 16
+unsigned char MidiSysexBuffer[MIDI_SYSEX_BUFFER_SIZE];
+unsigned char MidiSysexLen;
+
 void serial_MidiInByteHandler(uint8_t data);
 
 
@@ -67,27 +71,32 @@ void serial_MidiInByteHandler(uint8_t data) {
     if (len == -1) {
       len = SysMsgLengthLookup[data - 0xF0];
       if (len == 1) {
-        MidiInMsgHandler(MIDI_DEVICE_DIN, 1, data, 0, 0);
+        MidiInMsgHandler(MIDI_DEVICE_DIN, 1, data, 0, 0, MidiSysexBuffer, MidiSysexLen);
       }
       else {
         MidiByte0 = data;
         MidiNumData = len - 1;
         MidiCurData = 0;
+        MidiSysexLen = 0;
       }
     }
     else {
       MidiByte0 = data;
       MidiNumData = len - 1;
       MidiCurData = 0;
+      MidiSysexLen = 0;
     }
   }
   else // not a status byte
   {
-    if (MidiCurData == 0) {
+    if ((MidiNumData > 3) && (MidiSysexLen < MIDI_SYSEX_BUFFER_SIZE)) {
+      MidiSysexBuffer[MidiSysexLen++] = data;
+    }
+    else if (MidiCurData == 0) {
       MidiByte1 = data;
       if (MidiNumData == 1) {
         // 2 byte message complete
-        MidiInMsgHandler(MIDI_DEVICE_DIN, 1, MidiByte0, MidiByte1, 0);
+        MidiInMsgHandler(MIDI_DEVICE_DIN, 1, MidiByte0, MidiByte1, 0, NULL, 0);
         MidiCurData = 0;
       }
       else
@@ -96,7 +105,7 @@ void serial_MidiInByteHandler(uint8_t data) {
     else if (MidiCurData == 1) {
       MidiByte2 = data;
       if (MidiNumData == 2) {
-        MidiInMsgHandler(MIDI_DEVICE_DIN, 1, MidiByte0, MidiByte1, MidiByte2);
+        MidiInMsgHandler(MIDI_DEVICE_DIN, 1, MidiByte0, MidiByte1, MidiByte2, NULL, 0);
         MidiCurData = 0;
       }
     }

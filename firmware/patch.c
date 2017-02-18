@@ -376,9 +376,10 @@ void computebufI(int32_t *inp, int32_t *outp) {
 }
 
 void MidiInMsgHandler(midi_device_t dev, uint8_t port, uint8_t status,
-                      uint8_t data1, uint8_t data2) {
+                      uint8_t data1, uint8_t data2, 
+                      uint8_t sysex_bytes[], uint8_t sysex_len) {
   if (patchStatus == RUNNING) {
-    (patchMeta.fptr_MidiInHandler)(dev, port, status, data1, data2);
+    (patchMeta.fptr_MidiInHandler)(dev, port, status, data1, data2, sysex_bytes, sysex_len);
   }
 }
 

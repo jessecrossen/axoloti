@@ -45,13 +45,13 @@ HCD_HandleTypeDef hHCD;
 
 #include "midi.h"
 
-//extern void MidiInMsgHandler(uint8_t status, uint8_t data1, uint8_t data2);
+//extern void MidiInMsgHandler(uint8_t status, uint8_t data1, uint8_t data2, uint8_t sysex_bytes[], uint8_t sysex_len);
 
 //TODO: need incoming port number
 void MIDI_CB(uint8_t a,uint8_t b,uint8_t c,uint8_t d){
     USBH_DbgLog("M %x - %x %x %x\r\n",a,b,c,d);
     //  a= pkt header 0xF0 = cable number 0x0F=CIN
-    MidiInMsgHandler(MIDI_DEVICE_USB_HOST, ((a & 0xF0) >> 4)+ 1 ,b,c,d);
+    MidiInMsgHandler(MIDI_DEVICE_USB_HOST, ((a & 0xF0) >> 4)+ 1 ,b,c,d,NULL,0);
 }
 
 USBH_HandleTypeDef hUSBHost; /* USB Host handle */

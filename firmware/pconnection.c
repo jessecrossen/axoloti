@@ -60,7 +60,7 @@ __attribute__((noreturn))
   while (1) {
     chnReadTimeout(&MDU1, &r[0], 4, TIME_INFINITE);
     MidiInMsgHandler(MIDI_DEVICE_USB_DEVICE, ((r[0] & 0xF0) >> 4) + 1, r[1],
-                     r[2], r[3]);
+                     r[2], r[3], NULL, 0);
   }
 }
 
@@ -799,7 +799,7 @@ void PExReceiveByte(unsigned char c) {
     case 6:
       midi_r[2] = c;
       MidiInMsgHandler(MIDI_DEVICE_INTERNAL, 1, midi_r[0], midi_r[1],
-                       midi_r[2]);
+                       midi_r[2], NULL, 0);
       header = 0;
       state = 0;
       break;
@@ -1085,7 +1085,7 @@ void PExReceive(void) {
  void USBDMidiPoll(void) {
  uint8_t r[4];
  while (chnReadTimeout(&MDU1, &r, 4, TIME_IMMEDIATE)) {
- MidiInMsgHandler(MIDI_DEVICE_USB_DEVICE, (( r[0] & 0xF0) >> 4)+ 1, r[1], r[2], r[3]);
+ MidiInMsgHandler(MIDI_DEVICE_USB_DEVICE, (( r[0] & 0xF0) >> 4)+ 1, r[1], r[2], r[3], NULL, 0);
  }
  }
  */
